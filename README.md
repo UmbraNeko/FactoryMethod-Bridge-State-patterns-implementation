@@ -1,0 +1,1 @@
+# FactoryMethod-Bridge-State-patterns-implementation
