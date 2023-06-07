@@ -12,4 +12,5 @@
 Вместе эти паттерны позволяют создавать и управлять различными типами транспорта, а также изменять их состояния и поведение в удобной и расширяемой манере.
 # UML программы
 
-![dLFDRi8m3BxxAN9iXSe3L1mGI1CSa2Qn5p1fGDMwf78C4WBUdLGDRHfWO-GM-_kn7MTg6OdtFnL0gLdH5gKIooz2RMj3_86I3Ht52OGx8p4dXQowT9Bc0HWk0BYnJ8uaP8NMYYxd5JAnRHNpUnDliJ87rUWUJ5dyfhXcLqadoxTmtYEyu09rKQcbhlSSwhPoSwH_zzWoPwKyoagzoNQ-FGKfIPzqF_3g6Fx](https://github.com/UmbraNeko/FactoryMethod-Bridge-State-patterns-implementation/assets/104635652/e8dbaabc-fd4f-4d7c-a515-215bc570fa6b)
+
+![1](https://github.com/UmbraNeko/FactoryMethod-Bridge-State-patterns-implementation/assets/104635652/4335eb93-2e37-4cf1-a7f5-16c202db92e5)
