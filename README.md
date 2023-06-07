@@ -14,4 +14,6 @@
 
 
 
-![3](https://github.com/UmbraNeko/FactoryMethod-Bridge-State-patterns-implementation/assets/104635652/a08ec56c-b8f9-4cbc-9dbc-8443de80d8cc)
+
+
+![4](https://github.com/UmbraNeko/FactoryMethod-Bridge-State-patterns-implementation/assets/104635652/dfa04538-1299-4635-a5ec-298b10ef0123)
