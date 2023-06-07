@@ -43,39 +43,42 @@ abstract class Transport
     }
 
     public abstract void ShowStatus();
-    
-    // Фабричный метод для создания автомобиля
-    public static Transport CreateCar(IColor color)
-    {
-        return new Car(color);
-    }
 
-    // Фабричный метод для создания велосипеда
-    public static Transport CreateBicycle(IColor color)
-    {
-        return new Bicycle(color);
-    }
+    // Абстрактный фабричный метод
+    public abstract Transport CreateTransport();
 }
 
-// Конкретная реализация транспорта (автомобиль)
-class Car : Transport
+// Конкретная фабрика для создания автомобиля
+class CarFactory : Transport
 {
-    public Car(IColor color) : base(color) { }
+    public CarFactory(IColor color) : base(color) { }
 
     public override void ShowStatus()
     {
         Console.WriteLine("Автомобиль");
     }
+
+    // Переопределенный фабричный метод
+    public override Transport CreateTransport()
+    {
+        return new Car(color);
+    }
 }
 
-// Конкретная реализация транспорта (велосипед)
-class Bicycle : Transport
+// Конкретная фабрика для создания велосипеда
+class BicycleFactory : Transport
 {
-    public Bicycle(IColor color) : base(color) { }
+    public BicycleFactory(IColor color) : base(color) { }
 
     public override void ShowStatus()
     {
         Console.WriteLine("Велосипед");
+    }
+
+    // Переопределенный фабричный метод
+    public override Transport CreateTransport()
+    {
+        return new Bicycle(color);
     }
 }
 
@@ -131,9 +134,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Создаем автомобиль с красным цветом
+        // Создаем фабрику для автомобиля с красным цветом
         IColor redColor = new RedColor();
-        Transport car = Transport.CreateCar(redColor);
+        TransportFactory carFactory = new CarFactory(redColor);
+
+        // Используем фабрику для создания автомобиля
+        Transport car = carFactory.CreateTransport();
 
         // Показываем текущий статус автомобиля
         car.ShowStatus();
@@ -149,8 +155,11 @@ class Program
 
         Console.WriteLine();
 
-        // Создаем велосипед с красным цветом
-        Transport bicycle = Transport.CreateBicycle(redColor);
+        // Создаем фабрику для велосипеда с красным цветом
+        TransportFactory bicycleFactory = new BicycleFactory(redColor);
+
+        // Используем фабрику для создания велосипеда
+        Transport bicycle = bicycleFactory.CreateTransport();
 
         // Показываем текущий статус велосипеда
         bicycle.ShowStatus();
