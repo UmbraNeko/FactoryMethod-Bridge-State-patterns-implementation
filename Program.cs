@@ -1,23 +1,70 @@
 using System;
-using System.Collections.Generic;
 
-// Интерфейс для фабричного метода
-interface ITransportFactory
+// Интерфейс для цветов
+interface IColor
 {
-    ITransport CreateTransport();
+    void ApplyColor();
+}
+
+// Конкретная реализация интерфейса цветов
+class RedColor : IColor
+{
+    public void ApplyColor()
+    {
+        Console.WriteLine("Применен красный цвет.");
+    }
 }
 
 // Абстрактный класс для транспорта
 abstract class Transport
 {
-    protected ITransportFactory factory;
+    protected IColor color;
+    protected TransportState state;
 
-    public Transport(ITransportFactory factory)
+    public Transport(IColor color)
     {
-        this.factory = factory;
+        this.color = color;
+        state = new MovingState(this);
     }
 
-    public abstract void Move();
+    public void Move()
+    {
+        state.Move();
+    }
+
+    public void Stop()
+    {
+        state.Stop();
+    }
+
+    public void SetState(TransportState state)
+    {
+        this.state = state;
+    }
+
+    public abstract void ShowStatus();
+}
+
+// Конкретная реализация транспорта (автомобиль)
+class Car : Transport
+{
+    public Car(IColor color) : base(color) { }
+
+    public override void ShowStatus()
+    {
+        Console.WriteLine("Автомобиль");
+    }
+}
+
+// Конкретная реализация транспорта (велосипед)
+class Bicycle : Transport
+{
+    public Bicycle(IColor color) : base(color) { }
+
+    public override void ShowStatus()
+    {
+        Console.WriteLine("Велосипед");
+    }
 }
 
 // Абстрактный класс для состояний
@@ -30,70 +77,41 @@ abstract class TransportState
         this.transport = transport;
     }
 
-    public abstract void HandleInput();
+    public abstract void Move();
+    public abstract void Stop();
 }
 
-// Конкретная реализация фабричного метода для создания автомобилей
-class CarFactory : ITransportFactory
+// Конкретная реализация состояния "едет"
+class MovingState : TransportState
 {
-    public ITransport CreateTransport()
-    {
-        return new Car();
-    }
-}
-
-// Конкретная реализация фабричного метода для создания велосипедов
-class BicycleFactory : ITransportFactory
-{
-    public ITransport CreateTransport()
-    {
-        return new Bicycle();
-    }
-}
-
-// Конкретная реализация транспорта (автомобиль)
-class Car : Transport
-{
-    public Car() : base(new CarFactory()) { }
+    public MovingState(Transport transport) : base(transport) { }
 
     public override void Move()
     {
-        Console.WriteLine("Автомобиль едет по дороге.");
+        Console.WriteLine("Транспорт движется.");
+    }
+
+    public override void Stop()
+    {
+        Console.WriteLine("Транспорт останавливается.");
+        transport.SetState(new StoppedState(transport));
     }
 }
 
-// Конкретная реализация транспорта (велосипед)
-class Bicycle : Transport
+// Конкретная реализация состояния "остановлен"
+class StoppedState : TransportState
 {
-    public Bicycle() : base(new BicycleFactory()) { }
+    public StoppedState(Transport transport) : base(transport) { }
 
     public override void Move()
     {
-        Console.WriteLine("Велосипед движется по тротуару.");
+        Console.WriteLine("Транспорт начинает движение.");
+        transport.SetState(new MovingState(transport));
     }
-}
 
-// Конкретная реализация состояния для автомобиля (парковка)
-class CarParkingState : TransportState
-{
-    public CarParkingState(Transport transport) : base(transport) { }
-
-    public override void HandleInput()
+    public override void Stop()
     {
-        Console.WriteLine("Автомобиль припаркован.");
-        transport.Move(); // После парковки автомобиль может снова двигаться
-    }
-}
-
-// Конкретная реализация состояния для велосипеда (остановка)
-class BicycleStopState : TransportState
-{
-    public BicycleStopState(Transport transport) : base(transport) { }
-
-    public override void HandleInput()
-    {
-        Console.WriteLine("Велосипед остановлен.");
-        transport.Move(); // После остановки велосипед может снова двигаться
+        Console.WriteLine("Транспорт уже остановлен.");
     }
 }
 
@@ -101,21 +119,35 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Создаем автомобиль и перемещаем его
-        Transport car = new Car();
+        // Создаем автомобиль с красным цветом
+        IColor redColor = new RedColor();
+        Transport car = new Car(redColor);
+
+        // Показываем текущий статус автомобиля
+        car.ShowStatus();
+
+        // Двигаем автомобиль
         car.Move();
 
-        // Изменяем состояние автомобиля на парковку и перемещаем его
-        TransportState carState = new CarParkingState(car);
-        carState.HandleInput();
+        // Останавливаем автомобиль
+        car.Stop();
 
-        // Создаем велосипед и перемещаем его
-        Transport bicycle = new Bicycle();
+        // Пытаемся остановить уже остановленный автомобиль
+        car.Stop();
+
+        Console.WriteLine();
+
+        // Создаем велосипед с красным цветом
+        Transport bicycle = new Bicycle(redColor);
+
+        // Показываем текущий статус велосипеда
+        bicycle.ShowStatus();
+
+        // Двигаем велосипед
         bicycle.Move();
 
-        // Изменяем состояние велосипеда на остановку и перемещаем его
-        TransportState bicycleState = new BicycleStopState(bicycle);
-        bicycleState.HandleInput();
+        // Останавливаем велосипед
+        bicycle.Stop();
 
         Console.ReadLine();
     }
