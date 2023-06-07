@@ -43,6 +43,18 @@ abstract class Transport
     }
 
     public abstract void ShowStatus();
+    
+    // Фабричный метод для создания автомобиля
+    public static Transport CreateCar(IColor color)
+    {
+        return new Car(color);
+    }
+
+    // Фабричный метод для создания велосипеда
+    public static Transport CreateBicycle(IColor color)
+    {
+        return new Bicycle(color);
+    }
 }
 
 // Конкретная реализация транспорта (автомобиль)
@@ -121,7 +133,7 @@ class Program
     {
         // Создаем автомобиль с красным цветом
         IColor redColor = new RedColor();
-        Transport car = new Car(redColor);
+        Transport car = Transport.CreateCar(redColor);
 
         // Показываем текущий статус автомобиля
         car.ShowStatus();
@@ -138,7 +150,7 @@ class Program
         Console.WriteLine();
 
         // Создаем велосипед с красным цветом
-        Transport bicycle = new Bicycle(redColor);
+        Transport bicycle = Transport.CreateBicycle(redColor);
 
         // Показываем текущий статус велосипеда
         bicycle.ShowStatus();
